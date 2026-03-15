@@ -12,7 +12,6 @@ import {
   SiHuggingface, 
   SiTensorflow, 
   SiScikitlearn, 
-  SiXgboost, 
   SiMlflow, 
   SiDocker, 
   SiKubernetes, 
@@ -20,13 +19,14 @@ import {
   SiPostgresql, 
   SiRabbitmq, 
   SiPrometheus, 
-  SiGrafana, 
-  SiLoki, 
-  SiJaeger, 
-  SiOpentelemetry 
+  SiGrafana,
+  SiOpentelemetry
 } from 'react-icons/si'
 import { TbBrandTypescript } from 'react-icons/tb'
 import { DiPython } from 'react-icons/di'
+import { SiXgboost } from 'react-icons/si' // This is correct
+import { SiLoki } from 'react-icons/si'     // This is correct
+import { SiJaeger } from 'react-icons/si'   // This is correct
 
 // Fallback icon component
 const FallbackIcon = ({ color }: { color: string }) => (
@@ -37,7 +37,7 @@ const FallbackIcon = ({ color }: { color: string }) => (
     fill="none" 
     xmlns="http://www.w3.org/2000/svg"
   >
-    <rect x="4" y="4" width="16" height="16" rx="2" fill={color} fillOpacity="0.2" />
+    <rect x="4" y="4" width="16" height="16" rx="4" fill={color} fillOpacity="0.2" />
     <circle cx="12" cy="12" r="4" fill={color} />
   </svg>
 )
@@ -118,7 +118,7 @@ export function TechnologyStack() {
   const renderIcon = (Icon: any, color: string, name: string) => {
     try {
       // Check if Icon is a valid component
-      if (Icon && typeof Icon === 'object' || typeof Icon === 'function') {
+      if (Icon && (typeof Icon === 'object' || typeof Icon === 'function')) {
         return <Icon className="w-8 h-8 mb-2" style={{ color }} />
       }
       // Fallback for invalid icon
