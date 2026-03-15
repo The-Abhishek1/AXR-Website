@@ -1,26 +1,258 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:where(.dark, .dark *));
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  /* Red-themed primary colors */
+  --color-primary-50: #fff1f0;
+  --color-primary-100: #ffe4e2;
+  --color-primary-200: #ffcec9;
+  --color-primary-300: #ffaaa2;
+  --color-primary-400: #ff7a6b;
+  --color-primary-500: #ff4d3e;
+  --color-primary-600: #ed2f1f;
+  --color-primary-700: #c82113;
+  --color-primary-800: #a51e13;
+  --color-primary-900: #881f16;
+  --color-primary-950: #4b0c07;
+  
+  /* Red-themed secondary colors */
+  --color-secondary-50: #fef2f2;
+  --color-secondary-100: #fee2e2;
+  --color-secondary-200: #fecaca;
+  --color-secondary-300: #fca5a5;
+  --color-secondary-400: #f87171;
+  --color-secondary-500: #ef4444;
+  --color-secondary-600: #dc2626;
+  --color-secondary-700: #b91c1c;
+  --color-secondary-800: #991b1b;
+  --color-secondary-900: #7f1d1d;
+  --color-secondary-950: #450a0a;
+  
+  /* Dark mode backgrounds with red undertones */
+  --color-dark-100: #2d1a1a;
+  --color-dark-200: #261212;
+  --color-dark-300: #1f0f0f;
+  --color-dark-400: #180b0b;
+  --color-dark-500: #120808;
+  --color-dark-600: #0c0505;
+  --color-dark-700: #060202;
+  
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+  
+  --animate-gradient: gradient 8s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-glow: glow 2s ease-in-out infinite alternate;
+  --animate-grid: grid 20s linear infinite;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  @keyframes gradient {
+    0%, 100% {
+      background-size: 200% 200%;
+      background-position: left center;
+    }
+    50% {
+      background-size: 200% 200%;
+      background-position: right center;
+    }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+
+  @keyframes glow {
+    0% { box-shadow: 0 0 20px -10px rgba(239, 68, 68, 0.5); }
+    100% { box-shadow: 0 0 30px 5px rgba(239, 68, 68, 0.8); }
+  }
+
+  @keyframes grid {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(50px); }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    border-color: theme('colors.gray.200');
+  }
+  
+  body {
+    background-color: theme('colors.white');
+    color: theme('colors.gray.900');
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  .dark body {
+    background-color: theme('colors.dark.600');
+    color: theme('colors.gray.100');
+  }
+
+  /* Custom scrollbar - reduced width */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: theme('colors.gray.100');
+  }
+
+  .dark ::-webkit-scrollbar-track {
+    background-color: theme('colors.dark.300');
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgb(239 68 68 / 0.5);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(220 38 38 / 0.7);
+  }
+
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(239, 68, 68, 0.5) rgba(0, 0, 0, 0.1);
+  }
+}
+
+@layer components {
+  .glass {
+    backdrop-filter: blur(12px);
+    background-color: rgb(255 255 255 / 0.1);
+    border: 1px solid rgb(255 255 255 / 0.2);
+  }
+
+  .dark .glass {
+    background-color: rgb(45 26 26 / 0.5);
+    border-color: rgb(239 68 68 / 0.2);
+  }
+
+  .glass-card {
+    backdrop-filter: blur(4px);
+    background-color: rgb(255 255 255 / 0.05);
+    border: 1px solid rgb(255 255 255 / 0.1);
+  }
+
+  .dark .glass-card {
+    background-color: rgb(45 26 26 / 0.3);
+    border-color: rgb(239 68 68 / 0.1);
+  }
+
+  .gradient-text {
+    background: linear-gradient(to right, var(--color-primary-600), var(--color-secondary-600));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .dark .gradient-text {
+    background: linear-gradient(to right, var(--color-primary-400), var(--color-secondary-400));
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .gradient-border {
+    position: relative;
+  }
+
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(to right, var(--color-primary-500), var(--color-secondary-500));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: -10;
+  }
+
+  .hover-glow {
+    transition: all 300ms;
+  }
+
+  .hover-glow:hover {
+    box-shadow: 0 0 30px -5px rgb(239 68 68 / 0.5);
+  }
+
+  .grid-bg {
+    background-image: linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  .animate-in {
+    opacity: 0;
+    transform: translateY(1rem);
+    transition: all 700ms;
+  }
+
+  .animate-in.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+  background-color: rgb(239 68 68 / 0.3);
+  color: theme('colors.primary.900');
+}
+
+.dark ::selection {
+  color: theme('colors.primary.100');
+}
+
+/* Focus outline */
+:focus-visible {
+  outline: none;
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/* Loading animation */
+.loading-dots::after {
+  content: '.';
+  animation: dots 1.5s steps(5, end) infinite;
+}
+
+@keyframes dots {
+  0%, 20% { content: '.'; }
+  40% { content: '..'; }
+  60% { content: '...'; }
+  80%, 100% { content: ''; }
+}
+
+/* Gradient animations */
+.animated-gradient {
+  background: linear-gradient(
+    -45deg,
+    #ff4d3e,
+    #ef4444,
+    #dc2626,
+    #ff4d3e
+  );
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+/* Additional utility classes */
+.text-shadow-red {
+  text-shadow: 0 0 30px rgba(239, 68, 68, 0.3);
+}
+
+.bg-red-glow {
+  background: radial-gradient(circle at center, rgba(239, 68, 68, 0.15) 0%, transparent 70%);
 }
